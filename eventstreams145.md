@@ -1,8 +1,8 @@
 ---
 
 copyright:
-  years: 2015, 2020
-lastupdated: "2020-07-28"
+  years: 2015, 2021
+lastupdated: "2021-01-18"
 
 keywords: IBM Event Streams, Kafka as a service, managed Apache Kafka, service endpoints, VSIs, VPC, CSE, disruptive
 
@@ -131,14 +131,30 @@ ibmcloud resource service-instance-update <instance-name> --service-endpoints pr
 {: codeblock}
 
 
-To change the IP allowlist, use the following command:
+To change the IP allowlist, perform the following steps:
+
+1. Obtain the original IP allowlist applied on the instance
 
 ```
-ibmcloud resource service-instance-update <instance-name> --service-endpoints private -p '{"private_ip_allowlist":["CIDR1","CIDR2"]}'
+$ibmcloud es init -i <instance-name>
+API Endpoint:		https://mh-cktmqpdbvkfczhmn.us-south.containers.appdomain.cloud
+Service endpoints:	public-and-private
+Private IP allowlist:	"10.243.0.8/32","10.243.128.8/32","10.243.64.4/32"
+Storage size:		4096 GB
+Throughput:		300 MB/s
+OK
 ```
-{: codeblock}
 
-where CIDR1, 2 are IP addressess of the form a.b.c.d/e
+2. Add CIDRs into or delete CIDRs from the `Private IP allowlist`.
+
+3. Run the following command to update the service instance with a new list:
+
+  ```
+  ibmcloud resource service-instance-update <instance-name> --service-endpoints private -p '{"private_ip_allowlist":["CIDR1","CIDR2"]}'
+  ```
+  {: codeblock}
+
+  where CIDR1, 2 are IP addressess of the form a.b.c.d/e
 
 Note that if the private endpoint is enabled via CLI, next time when updating private IP allowlist, `--service-endpoints private` can be omitted.
 
@@ -156,6 +172,15 @@ ibmcloud resource service-instance <instance-name>
 {: codeblock}
 
 when **Last Operation.Status** shows **"sync succeeded"**, instance update is complete.
+
+## How to set private IP allowlist via Schematics
+{: #schematics_integration}
+
+Event Streams supports integration with [Schematics](https://cloud.ibm.com/docs/schematics?topic=schematics-getting-started).
+
+Refer to this [example](https://cloud.ibm.com/docs/terraform?topic=terraform-event-streams-resources) about how to set the `private_ip_allowlist` in a Terraform script. 
+
+Note: If the terraform script is executed from Schematics, additional IPs are required to be added into Event Streams' `private_ip_allowlist` to allow Schematics to access Event Streams' API endpoints. Find the IPs of Schematics in each region from [here](https://cloud.ibm.com/docs/schematics?topic=schematics-allowed-ipaddresses).
 
 
 ## Obtaining Virtual Private Cloud (VPC) CSE source IP addresses
