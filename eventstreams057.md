@@ -1,8 +1,8 @@
 ---
 
 copyright:
-  years: 2015, 2019
-lastupdated: "2019-09-02"
+  years: 2015, 2021
+lastupdated: "2021-02-15"
 
 keywords: IBM Event Streams, Kafka as a service, managed Apache Kafka
 
@@ -60,6 +60,7 @@ From the <code>java.security</code> file:
 
 ### How to modify the JVM's TTL
 {: #jvm_ttl notoc}
+
 * To modify the JVM's TTL for all applications, set the <code>networkaddress.cache.ttl</code> value in the <code><var class="keyword varname">$JAVA_HOME</var>/jre/lib/security/java.security</code> file.
 * To modify the JVM TTL for a given application, set the <code>networkaddress.cache.ttl</code> in your application code as follows:
 ```
@@ -95,26 +96,10 @@ You need to opt into this functionality by using one of the following methods:
 ## Topics and partitions
 {: #topics_partitions}
 
-*  Topic names are restricted to a maximum of 100 characters.
+*  Topic names are restricted to a maximum of 200 characters.
 *  The default number of partitions for a topic is one.
-*  Each {{site.data.keyword.Bluemix_notm}} space has a limit of 100 partitions. To create
-   more partitions, you must use a new {{site.data.keyword.Bluemix_notm}} space.
 
 <!--following message retention info duplicted in FAQs eventstreams108-->
-
-## Message retention
-{: #message_retention}
-
-By default, messages are retained in Kafka for up to 24 hours and
-each partition is capped at 1 GB. If the 1 GB cap is reached, the
-oldest messages are discarded to stay within the limit.
-
-You can change the time limit for message retention when you
-create a topic using either the user interface or the
-administration API. The time limit is a minimum of an hour and a
-maximum of 30 days.
-
-For information about restrictions on the settings allowed when you create topics using a Kafka client or Kafka Streams, see [How do I use Kafka APIs to create and delete topics?](/docs/EventStreams?topic=EventStreams-faqs#topic_admin).
 
 ## Creating and deleting topics in Kafka
 {: #create_delete}
